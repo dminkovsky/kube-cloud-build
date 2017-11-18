@@ -1,0 +1,19 @@
+{
+  "configuration": {
+    "active_configuration": "default",
+    "properties": {
+      "core": {
+        "account": "account",
+        "disable_usage_reporting": "True",
+        "project": "projectId"
+      }
+    }
+  },
+  "credential": {
+    "access_token": "token",
+    "token_expiry": "2017-11-20T20:39:27Z"
+  },
+  "sentinels": {
+    "config_sentinel": "/Users/dmitry/.config/gcloud/config_sentinel"
+  }
+}

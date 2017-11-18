@@ -1,0 +1,44 @@
+{
+    "name": "operations/build/some-project-712678/MjBjNGRmMWQtZTcxYi00MDg1LTlhMzAtZDc2YjI3NDdkOGFk",
+    "metadata": {
+        "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.BuildOperationMetadata",
+        "build": {
+            "id": "20c4df1d-e71b-4085-9a30-d76b2747d8ad",
+            "status": "QUEUED",
+            "source": {
+                "repoSource": {
+                    "projectId": "some-project-712678",
+                    "repoName": "some-repository",
+                    "commitSha": "ecd6a597f7a54c3dc878525577c4a8af8ce271cf"
+                }
+            },
+            "createTime": "2017-11-19T19:15:30.951939918Z",
+            "steps": [
+                {
+                    "name": "gcr.io/cloud-builders/docker",
+                    "args": [
+                        "build",
+                        "-t",
+                        "gcr.io/some-project-712678/zookeeper:ecd6a597f7a54c3dc878525577c4a8af8ce271cf",
+                        "."
+                    ],
+                    "dir": "deploy/zookeeper"
+                }
+            ],
+            "timeout": "600s",
+            "images": [
+                "gcr.io/some-project-712678/zookeeper:ecd6a597f7a54c3dc878525577c4a8af8ce271cf"
+            ],
+            "projectId": "some-project-712678",
+            "logsBucket": "gs://784456456234.cloudbuild-logs.googleusercontent.com",
+            "sourceProvenance": {
+                "resolvedRepoSource": {
+                    "projectId": "some-project-712678",
+                    "repoName": "some-repository",
+                    "commitSha": "ecd6a597f7a54c3dc878525577c4a8af8ce271cf"
+                }
+            },
+            "logUrl": "https://console.cloud.google.com/gcr/builds/20c4df1d-e71b-4085-9a30-d76b2747d8ad?project=some-project-712678"
+        }
+    }
+}

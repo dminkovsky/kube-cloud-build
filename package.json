@@ -1,0 +1,37 @@
+{
+  "name": "kube-cloud-build",
+  "version": "1.0.3",
+  "description": "Build containers specified in Kubernetes manifests",
+  "main": "dist/index.js",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "deep-equal": "^1.0.1",
+    "docker-parse-image": "^3.0.1",
+    "inquirer": "^4.0.0",
+    "js-yaml": "^3.10.0",
+    "minimist": "^1.2.0",
+    "raw-body": "^2.3.2",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "ttys": "^0.0.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "jest": "^21.2.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "yarn install && yarn run test && rm -r dist && mkdir dist && babel src -d dist"
+  },
+  "bin": {
+    "kube-cloud-build": "dist/index.js"
+  },
+  "author": "Dmitry Minkovsky <dminkovsky@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dminkovsky/kube-cloud-build"
+  }
+}

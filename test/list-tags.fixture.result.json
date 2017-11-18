@@ -1,0 +1,38 @@
+{
+    "child": [],
+    "manifest": {
+        "sha256:0e3d2ece2ae9bbe8c0234beb0968c1461955e8f8d1b07616293a720b3c1d64a9": {
+            "imageSizeBytes": "310391515",
+            "layerId": "",
+            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+            "tag": [
+                "90a0a34c6d85aa439c2be9baefbef091b86369e1"
+            ],
+            "timeCreatedMs": "1510541605759",
+            "timeUploadedMs": "1510541641433"
+        },
+        "sha256:276ca0e408d0e84a2f5151381e6e2a1b9afbda20773c42ac44e32849cfcb2936": {
+            "imageSizeBytes": "310391570",
+            "layerId": "",
+            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+            "tag": [
+                "ecd6a597f7a54c3dc878525577c4a8af8ce271cf"
+            ],
+            "timeCreatedMs": "1510691151291",
+            "timeUploadedMs": "1510691327330"
+        },
+        "sha256:baf170e4b0610371d53f058be2b1662ecc85f7edb4b0edb4a1db0198717fd090": {
+            "imageSizeBytes": "310391717",
+            "layerId": "",
+            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+            "tag": [],
+            "timeCreatedMs": "1510685190397",
+            "timeUploadedMs": "1510685368672"
+        }
+    },
+    "name": "some-project-712678/some-repository",
+    "tags": [
+        "90a0a34c6d85aa439c2be9baefbef091b86369e1",
+        "ecd6a597f7a54c3dc878525577c4a8af8ce271cf"
+    ]
+}
