@@ -19,7 +19,7 @@ $ npm install -g kube-cloud-build
 
 Suppose you have the following manifest:
 ```
-$ cat deployment.yaml
+$ cat examples/deployment.yaml
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -176,7 +176,6 @@ Initialized empty Git repository in /workspace/.git/
 kube-cloud-build -r <repository> [-f <file>]
 
 OPTIONS
-Name
 -f  Manifest file, if not reading from stdin
 -r  Google Source Repository to use in build requests
 ```
@@ -185,7 +184,7 @@ Name
 `stdin` is useful for deploying Helm charts:
 
 ```
-$ helm template . | kube-cloud-build -r repo
+$ helm template /path/to/chart | kube-cloud-build -r repo
 ```
 
 The project ID and API access token used to communicate with the Google Cloud
