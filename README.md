@@ -1,18 +1,49 @@
 # kube-cloud-build
 
+Specify container builds inside your Kubernetes manifests.
+
 [![Build Status](https://travis-ci.org/dminkovsky/kube-cloud-build.svg?branch=master)](https://travis-ci.org/dminkovsky/kube-cloud-build)
 
+Kubernetes helps orchestrate container deployments. But before Kubernetes can
+orchestrate anything, the container images specified in your Kubernetes
+manifests must be built and available in an image registry. Making this happen
+can be much easier said than done!
+
 `kube-cloud-build` integrates Kubernetes and [Google Cloud Container Builder](https://cloud.google.com/container-builder/docs/).
-It lets you declare [build steps](https://cloud.google.com/container-builder/docs/how-to/writing-build-requests)
-for containers right inside the manifests where they are used. `kube-cloud-build`
-parses your manifests and identifies images that are missing from Google
-Container Registry ("GCR"). It generates and submits build requests for missing
-images, then streams the build logs to your terminal.
+It lets you declare Cloud Container Builder [build steps](https://cloud.google.com/container-builder/docs/how-to/writing-build-requests)
+for containers right inside the manifests where they are used. With the build
+steps inside your manifests, any time you update the images specified by your
+manifests, `kube-cloud-build` will automatically generate build requests based
+on the missing images' build steps. Never write a build request by hand again!
+
+`kube-cloud-build` examines your Kubernetes manifests, identifies images that
+are missing from Google Container Registry (GCR), generates build requests for
+the missing images, and submits the build requests for you. It then streams
+build logs to your terminal.
+
+To use this tool, just add Container Builder build steps to your manifests.
+Then, any time you update an image's tag in a manifest, run that manifest
+through this tool. It'll make sure the images you need are built and available
+on GCR. Deploy with confidence, knowing you wont receive an image pull error.
 
 ### Install
 
 ```
 $ npm install -g kube-cloud-build
+```
+
+### Usage
+
+Process a single manifest:
+
+```
+$ kube-cloud-build -r repo -f examples/deployment.yaml
+```
+
+or an entire helm chart:
+
+```
+$ helm template /path/to/chart | kube-cloud-build -r repo
 ```
 
 ### Example
@@ -27,46 +58,6 @@ metadata:
 spec:
   replicas: 3
   template:
-    metadata:
-      annotations:
-        google.cloud.container.build: >
-            [{
-              "container": "init",
-              "steps": [{
-                "name": "gcr.io/cloud-builders/docker",
-                "dir": "init",
-                "args": [
-                  "build",
-                  "-t",
-                  "gcr.io/some-project-123456/init:8f4dfd28dbc51960d0bd2d463c23593cb878fd14",
-                  "."
-                ]
-              }]
-            },{
-              "container": "container1",
-              "steps": [{
-                "name": "gcr.io/cloud-builders/docker",
-                "dir": "container1",
-                "args": [
-                  "build",
-                  "-t",
-                  "gcr.io/some-project-123456/container1:v4",
-                  "."
-                ]
-              }]
-            },{
-              "container": "container2",
-              "steps": [{
-                "name": "gcr.io/cloud-builders/docker",
-                "dir": "container2",
-                "args": [
-                  "build",
-                  "-t",
-                  "gcr.io/some-project-123456/container2:v4",
-                  "."
-                ]
-              }]
-            }]
     spec:
       initContainers:
       - name: init
@@ -78,8 +69,75 @@ spec:
         image: gcr.io/some-project-123456/container2:v4
 ```
 
-Suppose the images in this manifest do not exist on GCR. If you supply this
-manifest to `kube-cloud-build` it will communicate with GCR and identify required images that are missing:
+You can deploy this manifest, but you will get a bunch of image pull errors if
+the images for the containers it specifies do not exist on GCR. You can build these images
+manually by submitting build requests to Container Builder, but with many manifests
+and containers this quickly becomes difficult to manage.
+
+The solution: add your Container Builder build steps directly to your manifest:
+
+```
+$ cat examples/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  template:
++   metadata:
++     annotations:
++       google.cloud.container.build: >
++           [{
++             "container": "init",
++             "steps": [{
++               "name": "gcr.io/cloud-builders/docker",
++               "dir": "init",
++               "args": [
++                 "build",
++                 "-t",
++                 "gcr.io/some-project-123456/init:8f4dfd28dbc51960d0bd2d463c23593cb878fd14",
++                 "."
++               ]
++             }]
++           },{
++             "container": "container1",
++             "steps": [{
++               "name": "gcr.io/cloud-builders/docker",
++               "dir": "container1",
++               "args": [
++                 "build",
++                 "-t",
++                 "gcr.io/some-project-123456/container1:v4",
++                 "."
++               ]
++             }]
++           },{
++             "container": "container2",
++             "steps": [{
++               "name": "gcr.io/cloud-builders/docker",
++               "dir": "container2",
++               "args": [
++                 "build",
++                 "-t",
++                 "gcr.io/some-project-123456/container2:v4",
++                 "."
++               ]
++             }]
++           }]
+    spec:
+      initContainers:
+      - name: init
+        image: gcr.io/some-project-123456/init:8f4dfd28dbc51960d0bd2d463c23593cb878fd14
+      containers:
+      - name: container1
+        image: gcr.io/some-project-123456/container1:v4
+      - name: container2
+        image: gcr.io/some-project-123456/container2:v4
+```
+
+Now feed this manifest to `kube-cloud-build`. It will communicate with GCR,  identify images
+that are missing, and ask which you want to build:
 
 ```
 $ kube-cloud-build -r repo -f deployment.yaml
@@ -92,8 +150,9 @@ $ kube-cloud-build -r repo -f deployment.yaml
 `kube-cloud-build` ignores images that are [not part of your project](test/manifest-container-builds.test.js#L21)
 or lack build instructions. Given the images you select, `kube-cloud-build`
 compiles the required containers' build steps into Container Builder build
-requests. Steps are grouped into build requests by tag. You review and
-optionally submit the requests:
+requests. Steps are grouped into build requests by tag.
+
+Review and optionally submit the requests:
 
 ```
 {
@@ -175,7 +234,6 @@ Initialized empty Git repository in /workspace/.git/
 ```
 kube-cloud-build -r <repository> [-f <file>]
 
-OPTIONS
 -f  Manifest file, if not reading from stdin
 -r  Google Source Repository to use in build requests
 ```
@@ -188,7 +246,9 @@ $ helm template /path/to/chart | kube-cloud-build -r repo
 ```
 
 The project ID and API access token used to communicate with the Google Cloud
-API are determined using [`gcloud config config-helper`](blob/master/src/get-config.js).
+API are determined using [`gcloud config config-helper`](src/get-config.js).
+
+If all required images are present on GCR, `kube-cloud-build` exits silently with status 0.
 
 ### FAQ
 
