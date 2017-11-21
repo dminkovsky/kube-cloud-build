@@ -158,7 +158,7 @@ optionally submit the requests:
 ? Do you want to submit these build requests? (y/N)
 ```
 
-If you choose "yes", `kube-cloud-build` will submit these build requests
+If you choose "yes," `kube-cloud-build` will submit these build requests
 serially. Build logs will stream to your terminal:
 
 ```
@@ -190,9 +190,31 @@ $ helm template /path/to/chart | kube-cloud-build -r repo
 The project ID and API access token used to communicate with the Google Cloud
 API are determined using [`gcloud config config-helper`](blob/master/src/get-config.js).
 
+### FAQ
+
+**What API calls does this tool make?**
+
 During the course of its operation, `kube-cloud-build` makes Google Cloud API
-calls analgous to:
+calls analogous to:
 
 * [`gcloud container images list-tags`](src/list-tags.js)
 * [`gcloud container builds submit`](src/submit-build-request.js)
 * [`gcloud container builds log --stream`](src/log-build.js)
+
+**What resource types can this tool handle?**
+
+`kube-cloud-build` handles Kubernetes resources that are either a `Pod` or
+contain a `PodTemplateSpec`:
+
+* `Pod`
+* `CronJob`
+* `Deployment`
+* `DaemonSet`
+* `Job`
+* `ReplicaSet`
+* `ReplicationController`
+* `StatefulSet`
+
+For each of these resources types, `kube-cloud-build` looks for a `google.cloud.container.build`
+ annotation inside of the metadata of the relevant [Pod](https://kubernetes.io/docs/api-reference/v1.8/#pod-v1-core) or
+ [PodTemplateSpec](https://kubernetes.io/docs/api-reference/v1.8/#podtemplatespec-v1-core).
