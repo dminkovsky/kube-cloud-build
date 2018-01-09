@@ -29,7 +29,6 @@ const filterMissingImages = require('./filter-missing-images')({listTags});
 const inquirerModule = inquirer.createPromptModule({input: ttys.stdin, output: ttys.stdout});
 const selectImages = require('./select-images')({inquirer: inquirerModule});
 const confirmSubmit = require('./confirm-submit')({log, inquirer: inquirerModule});
-const logBuild = require('./log-build')({process, exec});
 
 (async function main() {
     try {
@@ -53,7 +52,7 @@ const logBuild = require('./log-build')({process, exec});
         for (let i = 0; i < requests.length; i++) {
             const request = requests[i];
             const id = await submitBuildRequest({buildRequest: request, projectId, token});
-            await logBuild(id);
+            console.log(`Submitted build ${id}`);
         }
     } catch (e) {
         console.log(e);

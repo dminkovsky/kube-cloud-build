@@ -1,6 +1,6 @@
 {
   "name": "kube-cloud-build",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Build containers specified in Kubernetes manifests",
   "main": "dist/index.js",
   "dependencies": {

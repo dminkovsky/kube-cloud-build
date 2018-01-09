@@ -18,8 +18,7 @@ on the missing images' build steps. Never write a build request by hand again!
 
 `kube-cloud-build` examines your Kubernetes manifests, identifies images that
 are missing from Google Container Registry (GCR), generates build requests for
-the missing images, and submits the build requests for you. It then streams
-build logs to your terminal.
+the missing images, and submits the build requests for you.
 
 To use this tool, just add Container Builder build steps to your manifests.
 Then, any time you update an image's tag in a manifest, run that manifest
@@ -217,17 +216,7 @@ Review and optionally submit the requests:
 ? Do you want to submit these build requests? (y/N)
 ```
 
-If you choose "yes," `kube-cloud-build` will submit these build requests
-serially. Build logs will stream to your terminal:
-
-```
-------------------------------- REMOTE BUILD OUTPUT ------------------------------------------
-starting build "46c86411-b1f0-4003-a3c3-72a63497b377"
-
-FETCHSOURCE
-Initialized empty Git repository in /workspace/.git/
-...
-```
+If you choose "yes," `kube-cloud-build` will submit these build requests.
 
 ### Usage
 
@@ -259,7 +248,6 @@ calls analogous to:
 
 * [`gcloud container images list-tags`](src/list-tags.js)
 * [`gcloud container builds submit`](src/submit-build-request.js)
-* [`gcloud container builds log --stream`](src/log-build.js)
 
 **What resource types can this tool handle?**
 
