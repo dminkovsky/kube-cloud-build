@@ -23,7 +23,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "yarn install && yarn run test && rm -r dist && mkdir dist && babel src -d dist"
+    "build": "yarn install && yarn run test && rm -r dist && mkdir dist && babel src -d dist",
+    "prepublishOnly": "yarn build"
   },
   "bin": {
     "kube-cloud-build": "dist/index.js"
