@@ -13,7 +13,10 @@ export default function buildRequests({projectId, repoName, containerBuilds}) {
 }
 
 function findRequest(requests, {tagName, commitSha}) {
-    return requests.filter(({source: {repoSource}}) => repoSource.tagName === tagName || repoSource.commitSha === commitSha)[0] || null;
+    return requests.filter(({source: {repoSource}}) => {
+        return repoSource.tagName && repoSource.tagName === tagName ||
+            repoSource.commitSha && repoSource.commitSha === commitSha;
+    })[0] || null;
 }
 
 function newBuildRequest({projectId, repoName, tagName, commitSha}) {
