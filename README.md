@@ -36,13 +36,13 @@ $ npm install -g kube-cloud-build
 Process a single manifest:
 
 ```
-$ kube-cloud-build -r repo -f examples/deployment.yaml
+$ k8s-cloud-build -r repo -f examples/deployment.yaml
 ```
 
 or an entire helm chart:
 
 ```
-$ helm template /path/to/chart | kube-cloud-build -r repo
+$ helm template /path/to/chart | k8s-cloud-build -r repo
 ```
 
 ### Example
@@ -139,7 +139,7 @@ Now feed this manifest to `kube-cloud-build`. It will communicate with GCR,  ide
 that are missing, and ask which you want to build:
 
 ```
-$ kube-cloud-build -r repo -f deployment.yaml
+$ k8s-cloud-build -r repo -f deployment.yaml
 ? The following images are missing from Google Container Registry. Choose the ones you want to build: (Press <space> to select, <a> to toggle all, <i> to inverse selection)
 ❯◯ gcr.io/some-project-123456/init:8f4dfd28dbc51960d0bd2d463c23593cb878fd14
  ◯ gcr.io/some-project-123456/container1:v4
@@ -221,7 +221,7 @@ If you choose "yes," `kube-cloud-build` will submit these build requests.
 ### Usage
 
 ```
-kube-cloud-build -r <repository> [-f <file>]
+k8s-cloud-build -r <repository> [-f <file>]
 
 -f  Manifest file, if not reading from stdin
 -r  Google Source Repository to use in build requests
@@ -231,7 +231,7 @@ kube-cloud-build -r <repository> [-f <file>]
 `stdin` is useful for deploying Helm charts:
 
 ```
-$ helm template /path/to/chart | kube-cloud-build -r repo
+$ helm template /path/to/chart | k8s-cloud-build -r repo
 ```
 
 The project ID and API access token used to communicate with the Google Cloud
