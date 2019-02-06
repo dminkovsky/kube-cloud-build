@@ -27,7 +27,7 @@
     "prepublishOnly": "yarn build"
   },
   "bin": {
-    "kube-cloud-build": "dist/index.js"
+    "k8s-cloud-build": "dist/index.js"
   },
   "author": "Dmitry Minkovsky <dminkovsky@gmail.com>",
   "license": "MIT",
