@@ -55,7 +55,7 @@ const confirmSubmit = require('./confirm-submit')({log, inquirer: inquirerModule
             process.stdout.write(id);
         }
     } catch (e) {
-        process.stderr.write(e.message);
+        process.stderr.write(e.toString());
         process.exit(1);
     }
 })();
