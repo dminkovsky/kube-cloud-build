@@ -52,10 +52,10 @@ const confirmSubmit = require('./confirm-submit')({log, inquirer: inquirerModule
         for (let i = 0; i < requests.length; i++) {
             const request = requests[i];
             const id = await submitBuildRequest({buildRequest: request, projectId, token});
-            console.log(`Submitted build ${id}`);
+            process.stdout.write(id);
         }
     } catch (e) {
-        console.log(e);
+        process.stderr.write(e.message);
         process.exit(1);
     }
 })();
